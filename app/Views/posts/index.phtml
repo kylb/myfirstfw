@@ -1,20 +1,21 @@
 <div class="">
     <div class="">
         <h1>Posts</h1>
+        <a href="post/create"><button type="button" class="btn float-right">New</button></a>
         <p><?php echo $this->view->nome ?></p>
-    </div>
-    <div class="posts">
-        <?php foreach($this->view->posts as $post){ ?>
-            <ul >
-                <li>
-                    <h3 class="">
-                        <a href="/post/<?php echo $post->id; ?>/show"><?php echo $post->title ?> </a>
-                    </h3>
-                    <p><?php echo $post->content ?> </p>
-                </li>
-            </ul>
 
-        <?php } ?>
     </div>
+    <?php foreach($this->view->posts as $post){ ?>
+    <div class="posts">
+            <h3>
+                <a href="/post/<?php echo $post->id; ?>/show"><?php echo $post->title ?> </a>
+            </h3>
+            <p><?php echo $post->content ?> </p>
+            <p>
+                <a href="post/<?php echo $post->id; ?>/edit"><button type="button" class="btn float-right">Edit</button></a>
+                <a href="post/<?php echo $post->id; ?>/delete"><button type="button" class="btn float-right">Delete</button></a>
+            </p>
+    </div>
+    <?php } ?>
 </div>
 

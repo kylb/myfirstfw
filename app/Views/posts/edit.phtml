@@ -1,0 +1,21 @@
+<div class="">
+    <div class="">
+        <h1>Posts</h1>
+        <p><?php echo $this->view->nome ?></p>
+    </div>
+    <div class="posts">
+        <form action="/post/<?php echo $this->view->post->id?>/update" method="post" accept-charset="utf-8">
+            <div class="form">
+                <label for="title">Title</label>
+                <input type="text" name="title" class="form-item" value="<?php echo $this->view->post->title?>">
+            </div>
+            <div class="form">
+                <label for="content">Content</label>
+                <textarea name="content" class="form-item" rows="10"><?php echo $this->view->post->content?></textarea>
+            </div>
+            <a href="/posts"><button type="button" class="btn float-left">Cancel</button></a>
+            <button type="submit" class="btn float-left">Edit</button>
+        </form>
+    </div>
+</div>
+

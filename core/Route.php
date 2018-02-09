@@ -40,6 +40,7 @@ class Route{
         $urlArray = explode('/',$url);
         foreach($this->routes as $route){
             $routeArray = explode('/',$route[0]);
+            $param = [];
             for($i = 0; $i < count($routeArray);$i++){
                 if( ( strpos($routeArray[$i],"{") !== false ) && ( count($routeArray) == count($urlArray) ) ){
                     $routeArray[$i] = $urlArray[$i];
@@ -60,7 +61,7 @@ class Route{
                 case 1: $controller->$action($param[0],$this->getRequest()); break;
                 case 2: $controller->$action($param[0],$param[1],$this->getRequest()); break;
                 case 3: $controller->$action($param[0],$param[1],$param[2],$this->getRequest()); break;
-                default: $controller->$action($this->getRequest());
+                default: $controller->$action($this->getRequest()); break;
             }
         }
         else{
