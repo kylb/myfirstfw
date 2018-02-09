@@ -62,6 +62,30 @@ nav header ul li {
     transition: all 0.1s linear;
 }
 
+.posts ul li {
+    display:inline-block;
+    /*margin-right: 0px;
+    line-height: 50px;
+    vertical-align: middle;
+    -webkit-transition: all 0.1s linear;
+    -moz-transition: all 0.1s linear;
+    transition: all 0.1s linear;*/
+}
+
+.posts ul li a {
+    display: block;
+    /*min-width: 180px;*/
+    /*text-align: center;*/
+    line-height: 20px;
+    font-family: Arial, sans-serif;
+    /*color: #fff;
+    background: #e56c1d;*/
+    text-decoration: none;
+    -webkit-transition: all 0.1s linear;
+    -moz-transition: all 0.1s linear;
+    transition: all 0.1s linear;
+}
+
 nav header li a {
     display: block;
     min-width: 180px;
