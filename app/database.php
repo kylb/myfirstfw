@@ -11,7 +11,7 @@ return [
 
     'mysql' => [
         'host' => 'localhost',
-        'database' => 'myfisrtfw',
+        'database' => 'myfirstfw',
         'user' => 'root',
         'pass' => 'root',
         'charset' => 'utf8',

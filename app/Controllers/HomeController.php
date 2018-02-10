@@ -5,8 +5,8 @@ use Core\BaseController;
 class HomeController extends BaseController {
 
     public function index(){
-        $this->setPageTitle('Home');
-        $this->view->nome = "Powered by: Kylb";
+        $this->view->nome = "Home";
+        $this->setPageTitle($this->view->nome);
         $this->renderView("home/index","layout");
 
     }

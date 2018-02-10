@@ -6,9 +6,11 @@ abstract class BaseController{
     private $viewPath;
     private $layoutPath;
     private $pageTitle = null;
+    private $poweredBy = "Powered by: Kylb";
 
     public function __construct(){
         $this->view = new \stdClass;
+        $this->view->poweredBy = $this->poweredBy;
     }
 
     protected function renderView($viewPath,$layoutPath = null){

@@ -3,7 +3,7 @@ namespace App\Controllers;
 use Core\BaseController;
 use Core\Container;
 use Core\Redirect;
-use Core\BaseModel;
+use Core\Session;
 
 class PostsController extends BaseController
 {
@@ -15,22 +15,30 @@ class PostsController extends BaseController
     }
 
     public function index(){
-        $this->setPageTitle('Posts');
-        $this->view->nome = "Powered by: Kylb";
+        if(Session::get('success')){
+            $this->view->success = Session::get('success');
+            Session::destroy('success');
+        }
+        if(Session::get('errors')){
+            $this->view->errors = Session::get('errors');
+            Session::destroy('errors');
+        }
+        $this->view->nome = "Posts";
+        $this->setPageTitle($this->view->nome);
         $this->view->posts = $this->post->all();
         $this->renderView("posts/index","layout");
     }
 
     public function show($id){
-        $this->view->nome = "Powered by: Kylb - Post";
-        $this->view->post = $this->post->find($id);
+        $this->view->nome = "Post";
         $this->setPageTitle("{$this->view->post->title}");
+        $this->view->post = $this->post->find($id);
         $this->renderView("posts/show","layout");
     }
 
     public function create(){
-        $this->view->nome = "Powered by: Kylb - New Post";
-        $this->setPageTitle("New Post");
+        $this->view->nome = "New Post";
+        $this->setPageTitle($this->view->nome);
         $this->renderView("posts/create","layout");
     }
 
@@ -40,16 +48,20 @@ class PostsController extends BaseController
             'content' => $request->post->content
         ];
         if($this->post->create($data)){
-            Redirect::route('/posts');
+            return Redirect::route('/posts', [
+                'success' => ['Post created with success.']
+            ]);
         } else{
-            echo "Erro ao criar post.";
+            return Redirect::route('/posts', [
+                'errors' => ['Error: Post was not created.']
+            ]);
         }
     }
 
     public function edit($id){
-        $this->view->nome = "Powered by: Kylb - Edit Post";
+        $this->view->nome = "Edit Post";
+        $this->setPageTitle("{$this->view->nome } {$this->view->post->title}");
         $this->view->post = $this->post->find($id);
-        $this->setPageTitle("Edit Post {$this->view->post->title}");
         $this->renderView("posts/edit","layout");
     }
 
@@ -59,17 +71,25 @@ class PostsController extends BaseController
             'content' => $request->post->content
         ];
         if($this->post->update($data,$id)){
-            Redirect::route('/posts');
+            return Redirect::route('/posts', [
+                'success' => ['Post updated with success.']
+            ]);
         } else{
-            echo "Erro ao editar post.";
+            return Redirect::route('/posts', [
+                'errors' => ['Error: Post was not updated.']
+            ]);
         }
     }
 
     public function delete($id){
         if($this->post->delete($id)){
-            Redirect::route('/posts');
+            Redirect::route('/posts', [
+                'success' => ['Post deleted with success.']
+            ]);
         } else{
-            echo "Erro ao deletar post.";
+            return Redirect::route('/posts', [
+                'errors' => ['Error: Post was not deleted.']
+            ]);
         }
     }
 }
