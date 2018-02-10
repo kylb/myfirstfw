@@ -1,8 +1,8 @@
 <div>
-    <h1><?php echo $this->view->nome ?></h1>
+    <h1><?php echo $this->getPageTitle(); ?></h1>
 </div>
 <div class="posts">
-    <h3><?php echo $this->view->post->title; ?></h3>
+    <!--<h3><?php /*echo $this->view->post->title; */?></h3>-->
     <p><?php echo $this->view->post->content; ?></p>
     <!--<p>
         <a href="post/<?php /*echo $post->id; */?>/edit"><button type="button" class="btn float-right">Edit</button></a>

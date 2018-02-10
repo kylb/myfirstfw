@@ -8,6 +8,6 @@ class Redirect{
                 Session::set($key,$value);
             }
         }
-        return header("location:{$url}");
+        header("location:{$url}");
     }
 }

@@ -25,17 +25,17 @@ abstract class BaseController{
 
     protected function content(){
         if(file_exists( __DIR__ . "/../app/Views/{$this->viewPath}.phtml")){
-            require_once (__DIR__ . "/../app/Views/{$this->viewPath}.phtml");
+            return require_once (__DIR__ . "/../app/Views/{$this->viewPath}.phtml");
         } else{
-            echo "View Path not found.";
+            echo  "View Path not found.";
         }
     }
 
     protected function layout(){
         if(file_exists( __DIR__ . "/../app/Views/{$this->layoutPath}.phtml")){
-            require_once (__DIR__ . "/../app/Views/{$this->layoutPath}.phtml");
+            return require_once (__DIR__ . "/../app/Views/{$this->layoutPath}.phtml");
         } else{
-            echo "Layout Path not found.";
+            echo  "Layout Path not found.";
         }
     }
 
@@ -45,9 +45,9 @@ abstract class BaseController{
 
     protected function getPageTitle($separator = null){
         if($separator){
-            echo $this->pageTitle . " $separator " ;
+            return  $this->pageTitle . " $separator ";
         } else{
-            echo $this->pageTitle;
+            return  $this->pageTitle;
         }
     }
 

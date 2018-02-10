@@ -1,9 +1,8 @@
 <div class="">
     <div class="">
-        <h1><?php echo $this->view->nome ?></h1>
+        <h1><?php echo $this->getPageTitle(); ?></h1>
         <a href="post/create"><button type="button" class="btn float-right">New</button></a>
     </div>
-
 
     <?php
         $this->renderView('alerts/_success');

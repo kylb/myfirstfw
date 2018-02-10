@@ -54,6 +54,18 @@ abstract class BaseModel{
         $stmt->closeCursor();
         return $result;
     }
+    /*public function updateExtended (array $data, array $id){
+        $data = $this->prepareDataUpdateExtended($data);
+        $query = "UPDATE {$this->table} SET {$data[0]} WHERE id=:id";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->bindValue(":id",$id);
+        for($i = 0; $i < count($data[1]); $i++){
+            $stmt->bindValue("{$data[1][$i]}","{$data[2][$i]}");
+        }
+        $result = $stmt->execute();
+        $stmt->closeCursor();
+        return $result;
+    }*/
 
     public function delete ($id){
         $query = "DELETE FROM {$this->table} WHERE id=:id";
@@ -93,4 +105,17 @@ abstract class BaseModel{
         $strKeysBinds = substr($strKeysBinds, 1);
         return [$strKeysBinds, $binds, $values];
     }
+
+    /*private function prepareDataUpdateExtended(array $data){
+        $strKeysBinds = "";
+        $binds = [];
+        $values = [];
+        foreach ($data as $key => $value){
+            $strKeysBinds = "{$strKeysBinds}, {$key}=:{$key}";
+            $binds[] = ":{$key}";
+            $values[] = $value;
+        }
+        $strKeysBinds = substr($strKeysBinds, 1);
+        return [$strKeysBinds, $binds, $values];
+    }*/
 }
