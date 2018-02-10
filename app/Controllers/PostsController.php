@@ -4,6 +4,7 @@ use Core\BaseController;
 use Core\Container;
 use Core\Redirect;
 use Core\Session;
+use Core\Validator;
 
 class PostsController extends BaseController
 {
@@ -42,27 +43,35 @@ class PostsController extends BaseController
         $this->renderView("posts/create","layout");
     }
 
-    public function store($request){
+    public function edit($id){
+
+        if(Session::get('errors')){
+            $this->view->errors = Session::get('errors');
+            Session::destroy('errors');
+        }
+
+        $this->view->nome = "Edit Post";
+        $this->view->post = $this->post->find($id);
+        $this->setPageTitle("{$this->view->nome} - {$this->view->post->title}");
+        $this->renderView("posts/edit","layout");
+    }
+
+    public function store($request)
+    {
         $data = [
             'title' => $request->post->title,
             'content' => $request->post->content
         ];
-        if($this->post->create($data)){
+
+        if ($this->post->create($data)) {
             Redirect::route('/posts', [
                 'success' => ['Post created with success.']
             ]);
-        } else{
+        } else {
             Redirect::route('/posts', [
                 'errors' => ['Error: Post was not created.']
             ]);
         }
-    }
-
-    public function edit($id){
-        $this->view->nome = "Edit Post";
-        $this->setPageTitle("{$this->view->nome} {$this->view->post->title}");
-        $this->view->post = $this->post->find($id);
-        $this->renderView("posts/edit","layout");
     }
 
     public function update($id,$request){
@@ -73,14 +82,25 @@ class PostsController extends BaseController
         $conditions =[
             'id' => $id
         ];
-        if($this->post->update($data,$conditions)){
-            Redirect::route('/posts', [
-                'success' => ['Post edited with success.']
-            ]);
-        } else{
-            Redirect::route('/posts', [
-                'errors' => ['Error: Post was not updated.']
-            ]);
+        $rules = [
+            'title' => 'required',
+            'content' => 'required'
+        ];
+
+        $validator = Validator::make($data,$rules);
+
+        if($validator){
+            Redirect::route("/post/{$id}/edit");
+        } else {
+            if($this->post->update($data,$conditions)){
+                Redirect::route('/posts', [
+                    'success' => ['Post edited with success.']
+                ]);
+            } else{
+                Redirect::route('/posts', [
+                    'errors' => ['Error: Post was not updated.']
+                ]);
+            }
         }
     }
 
