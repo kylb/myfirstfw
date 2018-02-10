@@ -70,9 +70,12 @@ class PostsController extends BaseController
             'title' => $request->post->title,
             'content' => $request->post->content
         ];
-        if($this->post->update($data,$id)){
+        $conditions =[
+            'id' => $id
+        ];
+        if($this->post->update($data,$conditions)){
             Redirect::route('/posts', [
-                'success' => ['Post updated with success.']
+                'success' => ['Post edited with success.']
             ]);
         } else{
             Redirect::route('/posts', [
@@ -82,7 +85,10 @@ class PostsController extends BaseController
     }
 
     public function delete($id){
-        if($this->post->delete($id)){
+        $conditions = [
+            'id' => $id
+        ];
+        if($this->post->delete($conditions)){
             Redirect::route('/posts', [
                 'success' => ['Post deleted with success.']
             ]);
