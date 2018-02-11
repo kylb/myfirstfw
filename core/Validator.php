@@ -34,7 +34,7 @@ class Validator{
                                         $objModel = "\\App\\Models\\" . $subItems[1];
                                         $model = new $objModel;
                                         $find = $model->where($subItems[2],$dataValue)->first();
-                                        $errors['email'] = "{$find->id} - $find->subItems[2]}";
+                                        //$errors['email'] = "{$find->id}";
                                         if($find->id){
                                             if(isset($subItems[3]) && $find->id  == $subItems[3]){
                                                 break;
