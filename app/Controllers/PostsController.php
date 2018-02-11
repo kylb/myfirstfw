@@ -3,7 +3,6 @@ namespace App\Controllers;
 use Core\BaseController;
 use Core\Container;
 use Core\Redirect;
-use Core\Session;
 use Core\Validator;
 
 class PostsController extends BaseController
@@ -16,14 +15,6 @@ class PostsController extends BaseController
     }
 
     public function index(){
-        if(Session::get('success')){
-            $this->view->success = Session::get('success');
-            Session::destroy('success');
-        }
-        if(Session::get('errors')){
-            $this->view->errors = Session::get('errors');
-            Session::destroy('errors');
-        }
         $this->view->nome = "Posts";
         $this->setPageTitle($this->view->nome);
         $this->view->posts = $this->post->all();
@@ -44,12 +35,6 @@ class PostsController extends BaseController
     }
 
     public function edit($id){
-
-        if(Session::get('errors')){
-            $this->view->errors = Session::get('errors');
-            Session::destroy('errors');
-        }
-
         $this->view->nome = "Edit Post";
         $this->view->post = $this->post->find($id);
         $this->setPageTitle("{$this->view->nome} - {$this->view->post->title}");
@@ -62,15 +47,18 @@ class PostsController extends BaseController
             'title' => $request->post->title,
             'content' => $request->post->content
         ];
-
-        if ($this->post->create($data)) {
-            Redirect::route('/posts', [
-                'success' => ['Post created with success.']
-            ]);
+        if(Validator::make($data,$this->post->rules())){
+            Redirect::route("/post/create");
         } else {
-            Redirect::route('/posts', [
-                'errors' => ['Error: Post was not created.']
-            ]);
+            if ($this->post->create($data)) {
+                Redirect::route('/posts', [
+                    'success' => ['Post created with success.']
+                ]);
+            } else {
+                Redirect::route('/posts', [
+                    'errors' => ['Error: Post was not created.']
+                ]);
+            }
         }
     }
 
@@ -82,14 +70,7 @@ class PostsController extends BaseController
         $conditions =[
             'id' => $id
         ];
-        $rules = [
-            'title' => 'required',
-            'content' => 'required'
-        ];
-
-        $validator = Validator::make($data,$rules);
-
-        if($validator){
+        if(Validator::make($data,$this->post->rules())){
             Redirect::route("/post/{$id}/edit");
         } else {
             if($this->post->update($data,$conditions)){

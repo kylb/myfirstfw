@@ -6,11 +6,18 @@
         <form action="store" method="post" accept-charset="utf-8">
             <div class="form">
                 <label for="title">Title</label>
-                <input type="text" name="title" class="form-item">
+                <input type="text" name="title"
+                       class="form-item <?php echo (isset($this->errors['title'])) ? "required-invalid" : "valid";?>"
+                       value="<?php echo (isset($this->inputs['title'])) ? $this->inputs['title'] : $this->view->post->title;?>">
+                <?php if($this->errors['title']) { ?>
+                <span class="help-block"><?php echo $this->errors['title']; }?></span>
             </div>
             <div class="form">
                 <label for="content">Content</label>
-                <textarea name="content" class="form-item" rows="10"></textarea>
+                <textarea name="content" class="form-item <?php echo (isset($this->errors['content'])) ? "required-invalid" : "valid";?>" rows="10"><?php echo (isset($this->inputs['content'])) ? $this->inputs['content'] : $this->view->post->content;?></textarea>
+                <?php if($this->errors['content']) : ?>
+                    <span class="help-block"><?php echo $this->errors['content'];?></span>
+                <?php endif; ?>
             </div>
             <a href="/posts"><button type="button" class="btn float-left">Cancel</button></a>
             <button type="submit" class="btn float-left">Save</button>

@@ -2,15 +2,30 @@
 namespace Core;
 
 abstract class BaseController{
-    protected $view;
     private $viewPath;
     private $layoutPath;
     private $pageTitle = null;
-    private $poweredBy = "Powered by: Kylb";
+    protected $view;
+    protected $poweredBy;
+    protected $errors;
+    protected $success;
+    protected $inputs;
 
     public function __construct(){
         $this->view = new \stdClass;
-        $this->view->poweredBy = $this->poweredBy;
+        $this->poweredBy = "kylb@github.com";
+        if(Session::get('success')){
+            $this->success = Session::get('success');
+            Session::destroy('success');
+        }
+        if(Session::get('errors')){
+            $this->errors = Session::get('errors');
+            Session::destroy('errors');
+        }
+        if(Session::get('inputs')){
+            $this->inputs = Session::get('inputs');
+            Session::destroy('inputs');
+        }
     }
 
     protected function renderView($viewPath,$layoutPath = null){
