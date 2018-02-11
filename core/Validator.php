@@ -30,6 +30,20 @@ class Validator{
                                             $errors["{$ruleKey}"] = "O campo {$ruleKey} deve ter no máximo {$subItems[1]} caracteres.";
                                         }
                                         break;
+                                    case 'unique':
+                                        $objModel = "\\App\\Models\\" . $subItems[1];
+                                        $model = new $objModel;
+                                        $find = $model->where($subItems[2],$dataValue)->first();
+                                        $errors['email'] = "{$find->id} - $find->subItems[2]}";
+                                        if($find->id){
+                                            if(isset($subItems[3]) && $find->id  == $subItems[3]){
+                                                break;
+                                            } else{
+                                                $errors["{$ruleKey}"] = "{$ruleKey} já registrado no banco de dados.";
+                                                break;
+                                            }
+                                        }
+                                        break;
                                     default:
                                         break;
                                 }
@@ -71,6 +85,19 @@ class Validator{
                             case 'max':
                                 if (strlen($dataValue) > $items[1]) {
                                     $errors["{$ruleKey}"] = "O campo {$ruleKey} deve ter no máximo {$items[1]} caracteres.";
+                                }
+                                break;
+                            case 'unique':
+                                $objModel = "\\App\\Models\\" . $items[1];
+                                $model = new $objModel;
+                                $find = $model->where($items[2],$dataValue)->first();
+                                if($find->id){
+                                    if(isset($items[3]) && $find->id == $items[3]){
+                                        break;
+                                    } else{
+                                        $errors["{$ruleKey}"] = "{$ruleKey} já registrado no banco de dados.";
+                                        break;
+                                    }
                                 }
                                 break;
                             default:
