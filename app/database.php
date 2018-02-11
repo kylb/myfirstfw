@@ -3,17 +3,19 @@ return [
     /*
      * Option: (mysql,sqlite)
      */
+    //'baseModel' => 'illuminate',
+
     'driver' => 'mysql',
 
     'sqlite' => [
-        'host' => 'database.db'
+        'database' => 'database.db'
     ],
 
     'mysql' => [
         'host' => 'localhost',
         'database' => 'myfirstfw',
-        'user' => 'root',
-        'pass' => 'root',
+        'username' => 'root',
+        'password' => 'root',
         'charset' => 'utf8',
         'collation' =>'utf8_unicode_ci'
     ]

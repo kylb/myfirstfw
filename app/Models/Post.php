@@ -1,18 +1,17 @@
 <?php
 namespace App\Models;
 use Core\BaseModel;
+use Core\BaseModelEloquent;
+class Post extends BaseModelEloquent {
 
-class Post extends BaseModel {
-
-    protected $table = 'posts';
+    public $table = 'posts';
+    public $timestamps = false;
+    protected $fillable = ['title', 'content'];
 
     public function rules(){
         return [
-            'title' => 'max:140|required',
-            'content' => 'min:10|max:900'
+            'title' => 'max:255|min:5',
+            'content' => 'min:10'
         ];
     }
-
-
-
 }

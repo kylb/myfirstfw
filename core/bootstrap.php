@@ -1,4 +1,6 @@
 <?php
+use Illuminate\Database\Capsule\Manager as Capsule;
+
 /*start session*/
 if(!session_id()){
     session_start();

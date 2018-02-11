@@ -1,7 +1,7 @@
 <?php
 namespace App\Controllers;
+use App\Models\Post;
 use Core\BaseController;
-use Core\Container;
 use Core\Redirect;
 use Core\Validator;
 
@@ -11,7 +11,7 @@ class PostsController extends BaseController
 
     public function __construct() {
         parent::__construct();
-        $this->post = Container::newModel('Post');
+        $this->post = new Post;
     }
 
     public function index(){
@@ -47,9 +47,24 @@ class PostsController extends BaseController
             'title' => $request->post->title,
             'content' => $request->post->content
         ];
+
         if(Validator::make($data,$this->post->rules())){
-            Redirect::route("/post/create");
-        } else {
+            return Redirect::route("/post/create");
+        }
+        try{
+            $this->post->create($data);
+            Redirect::route('/posts', [
+                'success' => ['Post created with success.']
+            ]);
+        }catch(\Exception $e){
+            Redirect::route('/posts', [
+                'errors' => [$e->getMessage()]
+            ]);
+        }
+
+        /*
+         * Usando BaseModel
+         * else {
             if ($this->post->create($data)) {
                 Redirect::route('/posts', [
                     'success' => ['Post created with success.']
@@ -59,7 +74,7 @@ class PostsController extends BaseController
                     'errors' => ['Error: Post was not created.']
                 ]);
             }
-        }
+        }*/
     }
 
     public function update($id,$request){
@@ -67,12 +82,27 @@ class PostsController extends BaseController
             'title' => $request->post->title,
             'content' => $request->post->content
         ];
-        $conditions =[
+        /*$conditions =[
             'id' => $id
-        ];
+        ];*/
         if(Validator::make($data,$this->post->rules())){
-            Redirect::route("/post/{$id}/edit");
-        } else {
+            return Redirect::route("/post/{$id}/edit");
+        }
+
+        try{
+            $this->post->find($id)->update($data);
+            Redirect::route('/posts', [
+                'success' => ['Post edited with success.']
+            ]);
+        }catch(\Exception $e){
+            Redirect::route('/posts', [
+                'errors' => [$e->getMessage()]
+            ]);
+        }
+
+        /*
+         * Usando BaseModel
+         * else{
             if($this->post->update($data,$conditions)){
                 Redirect::route('/posts', [
                     'success' => ['Post edited with success.']
@@ -82,11 +112,24 @@ class PostsController extends BaseController
                     'errors' => ['Error: Post was not updated.']
                 ]);
             }
-        }
+        }*/
     }
 
     public function delete($id){
-        $conditions = [
+        try{
+            $this->post->find($id)->delete();
+            Redirect::route('/posts', [
+                'success' => ['Post deleted with success.']
+            ]);
+        }catch(\Exception $e){
+            Redirect::route('/posts', [
+                'errors' => [$e->getMessage()]
+            ]);
+        }
+
+        /*
+         * Usando BaseModel
+         * $conditions = [
             'id' => $id
         ];
         if($this->post->delete($conditions)){
@@ -97,6 +140,6 @@ class PostsController extends BaseController
             Redirect::route('/posts', [
                 'errors' => ['Error: Post was not deleted.']
             ]);
-        }
+        }*/
     }
 }
