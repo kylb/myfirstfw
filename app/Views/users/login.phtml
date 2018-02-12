@@ -9,7 +9,7 @@
 
         <form class="login-form" method="post" action="/login/auth">
             <input type="text" name="email"
-                   <?php if(isset($this->inputs['email'])){
+                   <?php if(isset($this->inputs['email']) && !empty($this->inputs['email'])){
                       echo 'value="' . $this->inputs['email'] . '"';
                    } else {
                        echo 'placeholder="email"';
