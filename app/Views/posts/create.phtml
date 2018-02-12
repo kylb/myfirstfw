@@ -1,9 +1,9 @@
-<div class="">
+<div class="container">
     <div class="">
         <h1><?php echo $this->getPageTitle(); ?></h1>
     </div>
-    <div class="posts">
-        <form action="store" method="post" accept-charset="utf-8">
+    <form action="store" method="post" accept-charset="utf-8">
+        <div class="posts">
             <div class="form">
                 <label for="title">Title</label>
                 <input type="text" name="title"
@@ -21,7 +21,21 @@
             </div>
             <a href="/posts"><button type="button" class="btn float-left">Cancel</button></a>
             <button type="submit" class="btn float-left">Save</button>
-        </form>
-    </div>
+        </div>
+        <div class="category">
+            <div class="form">
+                <label for="title">Categories</label>
+                <?php foreach ($this->view->categories as $cat) : ?>
+                    <div class="checkbox">
+                        <input type="checkbox" name="category_id[]" value="<?php echo $cat->id ?>"
+                            <?php foreach($this->view->post->category as $item) {
+                                echo ($cat->id == $item->id) ? 'checked' : '';
+                            }?>
+                        />
+                        <?php echo $cat->name ?>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        </div>
+    </form>
 </div>
-

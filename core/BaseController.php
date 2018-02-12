@@ -6,6 +6,7 @@ abstract class BaseController{
     private $layoutPath;
     private $pageTitle = null;
     protected $view;
+    protected $auth;
     protected $poweredBy;
     protected $errors;
     protected $success;
@@ -13,6 +14,7 @@ abstract class BaseController{
 
     public function __construct(){
         $this->view = new \stdClass;
+        $this->auth = new Auth;
         $this->poweredBy = "kylb@github.com";
         if(Session::get('success')){
             $this->success = Session::get('success');
@@ -64,6 +66,10 @@ abstract class BaseController{
         } else{
             return  $this->pageTitle;
         }
+    }
+
+    public function forbiden(){
+        Redirect::route("/login");
     }
 
 }

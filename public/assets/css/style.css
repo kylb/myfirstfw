@@ -1,10 +1,107 @@
 @import "alerts.css";
 @import "menu.css";
+@import "login.css";
 * {
     box-sizing: border-box;
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box
 }
+
+h1, h2, h3, h4, h5, h6
+{
+    margin-bottom: 0.5rem;
+    font-family: inherit;
+    font-weight: 500;
+    line-height: 1.2;
+    color: inherit;
+}
+
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #212529;
+    text-align: left;
+    background-color: #fff;
+}
+.text-justify {
+    text-align: justify !important;
+}
+
+.text-nowrap {
+    white-space: nowrap !important;
+}
+
+.text-left {
+    text-align: left !important;
+}
+
+.text-right {
+    text-align: right !important;
+}
+
+.text-center {
+    text-align: center !important;
+}
+.container {
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+}
+.container label {
+    font-weight: bold;
+}
+.container a{
+    display: block;
+    line-height: 20px;
+    font-family: Arial, sans-serif;
+    text-decoration: none;
+    -webkit-transition: all 0.1s linear;
+    -moz-transition: all 0.1s linear;
+    transition: all 0.1s linear;
+}
+.row {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    margin-right: -15px;
+    margin-left: -15px;
+}
+
+div .posts{
+    float: left;
+    width: 80%;
+    display:inline-block;
+}
+div .category{
+    float: left;
+    width: 10%;
+    display:inline-block;
+}
+
+div .form {
+    margin-bottom: 1rem;
+}
+
+div .form-item {
+    display: block;
+    width: 75%;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
 
 .float-left {
     float: left !important;
@@ -31,39 +128,6 @@ button {
     background: #e56c1d;
     padding: 10px 20px;
     text-decoration: none;
-}
-
-div .posts{
-    float: left;
-    width: 80%;
-    display:inline-block;
-}
-
-div .posts a {
-    display: block;
-    line-height: 20px;
-    font-family: Arial, sans-serif;
-    text-decoration: none;
-    -webkit-transition: all 0.1s linear;
-    -moz-transition: all 0.1s linear;
-    transition: all 0.1s linear;
-}
-
-div .form {
-    margin-bottom: 1rem;
-}
-
-div .form-item {
-    display: block;
-    width: 75%;
-    padding: 0.375rem 0.75rem;
-    font-size: 1rem;
-    line-height: 1.5;
-    color: #495057;
-    background-color: #fff;
-    background-clip: padding-box;
-
-    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
 label {

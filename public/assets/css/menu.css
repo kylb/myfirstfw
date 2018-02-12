@@ -1,3 +1,11 @@
+.float-right{
+    float: right;
+}
+.float-left{
+    float: right;
+}
+
+
 nav header {
     display: block;
     padding: 5px 0px 5px 7%;
@@ -15,7 +23,6 @@ nav header .logo {
 nav header ul {
     list-style-type:none;
     border: none;
-    float: right;
     margin: 5px 0;
     -webkit-transition: all 0.3s ease;
     -moz-transition: all 0.3s ease;

@@ -1,6 +1,8 @@
 <?php
 namespace App\Controllers;
+use App\Models\Category;
 use App\Models\Post;
+use Core\Auth;
 use Core\BaseController;
 use Core\Redirect;
 use Core\Validator;
@@ -31,50 +33,46 @@ class PostsController extends BaseController
     public function create(){
         $this->view->nome = "New Post";
         $this->setPageTitle($this->view->nome);
+        $this->view->categories = Category::all();
         $this->renderView("posts/create","layout");
     }
 
     public function edit($id){
         $this->view->nome = "Edit Post";
         $this->view->post = $this->post->find($id);
+        $this->view->categories = Category::all();
+        //validacao de acesso indevido a rota de edicao
+        if(Auth::id() != $this->view->post->user->id){
+            return Redirect::route('/posts', [
+                'errors' => ['Ahaaa! Você não pode editar posts de outro autor.']
+            ]);
+        }
         $this->setPageTitle("{$this->view->nome} - {$this->view->post->title}");
         $this->renderView("posts/edit","layout");
     }
 
-    public function store($request)
-    {
+    public function store($request){
         $data = [
+            'user_id' => Auth::id(),
             'title' => $request->post->title,
             'content' => $request->post->content
         ];
-
-        if(Validator::make($data,$this->post->rules())){
+        if(Validator::make($data,$this->post->rulesCreate())){
             return Redirect::route("/post/create");
         }
         try{
-            $this->post->create($data);
-            Redirect::route('/posts', [
+            $this->view->post = $this->post->create($data);
+            if(isset($request->post->category_id)){
+                $this->view->post->category()->sync($request->post->category_id);
+            }
+            return Redirect::route('/posts', [
                 'success' => ['Post created with success.']
             ]);
         }catch(\Exception $e){
-            Redirect::route('/posts', [
+            return Redirect::route('/posts', [
                 'errors' => [$e->getMessage()]
             ]);
         }
-
-        /*
-         * Usando BaseModel
-         * else {
-            if ($this->post->create($data)) {
-                Redirect::route('/posts', [
-                    'success' => ['Post created with success.']
-                ]);
-            } else {
-                Redirect::route('/posts', [
-                    'errors' => ['Error: Post was not created.']
-                ]);
-            }
-        }*/
     }
 
     public function update($id,$request){
@@ -82,64 +80,44 @@ class PostsController extends BaseController
             'title' => $request->post->title,
             'content' => $request->post->content
         ];
-        /*$conditions =[
-            'id' => $id
-        ];*/
-        if(Validator::make($data,$this->post->rules())){
+        if(Validator::make($data,$this->post->rulesUpdate())){
             return Redirect::route("/post/{$id}/edit");
         }
-
         try{
-            $this->post->find($id)->update($data);
-            Redirect::route('/posts', [
+            $this->view->post = $this->post->find($id);
+            $this->view->post->update($data);
+            if(isset($request->post->category_id)){
+                $this->view->post->category()->sync($request->post->category_id);
+            } else{
+                $this->view->post->category()->detach();
+            }
+            return Redirect::route('/posts', [
                 'success' => ['Post edited with success.']
             ]);
         }catch(\Exception $e){
-            Redirect::route('/posts', [
+            return Redirect::route('/posts', [
                 'errors' => [$e->getMessage()]
             ]);
         }
-
-        /*
-         * Usando BaseModel
-         * else{
-            if($this->post->update($data,$conditions)){
-                Redirect::route('/posts', [
-                    'success' => ['Post edited with success.']
-                ]);
-            } else{
-                Redirect::route('/posts', [
-                    'errors' => ['Error: Post was not updated.']
-                ]);
-            }
-        }*/
     }
 
     public function delete($id){
         try{
-            $this->post->find($id)->delete();
-            Redirect::route('/posts', [
+            $this->view->post = $this->post->find($id);
+            if(Auth::id() != $this->view->post->user->id){
+                return Redirect::route('/posts', [
+                    'errors' => ['Ahaaa! Você não pode deletar posts de outro autor.']
+                ]);
+            }
+            $this->view->post->delete();
+            $this->view->post->category()->detach();
+            return Redirect::route('/posts', [
                 'success' => ['Post deleted with success.']
             ]);
         }catch(\Exception $e){
-            Redirect::route('/posts', [
+            return Redirect::route('/posts', [
                 'errors' => [$e->getMessage()]
             ]);
         }
-
-        /*
-         * Usando BaseModel
-         * $conditions = [
-            'id' => $id
-        ];
-        if($this->post->delete($conditions)){
-            Redirect::route('/posts', [
-                'success' => ['Post deleted with success.']
-            ]);
-        } else{
-            Redirect::route('/posts', [
-                'errors' => ['Error: Post was not deleted.']
-            ]);
-        }*/
     }
 }

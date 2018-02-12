@@ -4,8 +4,12 @@ use App\Models\User;
 use Core\BaseController;
 use Core\Redirect;
 use Core\Validator;
+use Core\Authenticate;
 
 class UserController extends BaseController {
+
+    use Authenticate;
+
     private $user;
 
     public function __construct() {
@@ -14,9 +18,15 @@ class UserController extends BaseController {
     }
 
     public function create(){
-        $this->view->nome = "New Post";
+        $this->view->nome = "New User";
         $this->setPageTitle($this->view->nome);
-        $this->renderView("user/create","layout");
+        $this->renderView("users/create","layout");
+    }
+
+    public function login(){
+        $this->view->nome = "Login Panel";
+        $this->setPageTitle($this->view->nome);
+        $this->renderView("users/login","layout");
     }
 
     public function store($request){
@@ -26,8 +36,8 @@ class UserController extends BaseController {
             'password' => $request->post->password
         ];
 
-        if(Validator::make($data,$this->user->rules())){
-            return Redirect::route("/user/create");
+        if(Validator::make($data,$this->user->rulesCreate())){
+            return Redirect::route("/user/create", "layout");
         }
 
         $data['password'] = password_hash($request->post->password,PASSWORD_BCRYPT);

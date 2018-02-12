@@ -39,7 +39,7 @@ class Validator{
                                             if(isset($subItems[3]) && $find->id  == $subItems[3]){
                                                 break;
                                             } else{
-                                                $errors["{$ruleKey}"] = "{$ruleKey} já registrado no banco de dados.";
+                                                $errors["{$ruleKey}"] = "{$ruleKey} já está sendo utilizado.";
                                                 break;
                                             }
                                         }
@@ -56,7 +56,7 @@ class Validator{
                                         break;
                                     case 'email':
                                         if (!filter_var($dataValue, FILTER_VALIDATE_EMAIL)) {
-                                            $errors["{$ruleKey}"] = "O campo {$ruleKey} deve conter um E-MAIL VALIDO.";
+                                            $errors["{$ruleKey}"] = strtoupper($ruleKey) . " INVALIDO";
                                         }
                                         break;
                                     case 'float':
@@ -112,7 +112,7 @@ class Validator{
                                 break;
                             case 'email':
                                 if (!filter_var($dataValue, FILTER_VALIDATE_EMAIL)) {
-                                    $errors["{$ruleKey}"] = "O campo {$ruleKey} deve conter um E-MAIL VALIDO.";
+                                    $errors["{$ruleKey}"] = strtoupper($ruleKey) . " INVALIDO";
                                 }
                                 break;
                             case 'float':
